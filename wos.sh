@@ -12,6 +12,41 @@ echo -e "\n                 Installation script                 \n"
 )
 
 weakos
+
+# Check if necessary directories are present or not
+dirs=(
+    
+    $HOME/.config/qtile
+    $HOME/.config/picom
+    $HOME/.config/alacritty
+    $HOME/.config/dunst
+    $HOME/.config/wos
+    $HOME/.config/rofi
+    $HOME/.config/wos/rofi
+    '/home/weak/blabla/'
+    '/home/weak/sfd/'
+    '/usr/share/wos'
+    '/usr/share/icons'
+    '/usr/share/themes'
+    )
+
+for dirs in ${dirs[@]}; do
+    # echo $dirs
+    if [ -d ${dirs} ] 
+then
+    echo $dirs "..exists"
+    # sudo mkdir /usr/share/wos
+else
+    
+    printf '\e[38;5;196m Foreground color: red\n'
+    echo "these $dirs do not exists"
+    printf '\e[0m'
+fi
+
+    
+done
+exit
+
 wospath=$HOME/wos
 # for testing only
 rm -r $HOME/.config/qtile
@@ -21,6 +56,7 @@ rm -r $HOME/.config/dunst
 rm -r $HOME/.config/wos
 rm -r $HOME/.config/rofi
 rm -r $HOME/.config/wos/rofi
+
 
 echo "Copying configuration files"
 mkdir $HOME/.config/wos
