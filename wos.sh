@@ -13,63 +13,20 @@ echo -e "\n                 Installation script                 \n"
 
 weakos
 
-# Check if necessary directories are present or not
-dirs=(
-    
-    $HOME/.config/qtile
-    $HOME/.config/picom
-    $HOME/.config/alacritty
-    $HOME/.config/dunst
-    $HOME/.config/wos
-    $HOME/.config/rofi
-    $HOME/.config/wos/rofi
-    '/home/weak/blabla/'
-    '/home/weak/sfd/'
-    '/usr/share/wos'
-    '/usr/share/icons'
-    '/usr/share/themes'
-    )
-
-for dirs in ${dirs[@]}; do
-    # echo $dirs
-    if [ -d ${dirs} ] 
-then
-    echo $dirs "..exists"
-    # sudo mkdir /usr/share/wos
-else
-    
-    printf '\e[38;5;196m Foreground color: red\n'
-    echo "$dirs ..do not exists"
-    printf '\e[0m'
-fi
-
-    
-done
-
-
 wospath=$HOME/wos
-# for testing only
-rm -r $HOME/.config/qtile
-rm -r $HOME/.config/picom
-rm -r $HOME/.config/alacritty
-rm -r $HOME/.config/dunst
-rm -r $HOME/.config/wos
-rm -r $HOME/.config/rofi
-rm -r $HOME/.config/wos/rofi
-
 
 echo "Copying configuration files"
-mkdir $HOME/.config/wos
-mkdir $HOME/.config/rofi
-mkdir $HOME/.config/wos/rofi
-cp -r $wospath/dotfiles/* $HOME/.config/
-cp -r $wospath/menus $HOME/.config/wos
-cp $wospath/rofi/config.rasi $HOME/.config/rofi/config.rasi
-cp -r $wospath/themes $HOME/.config/wos/themes
-cp -r $wospath/rofi/themes $HOME/.config/wos/rofi
+mkdir -p $HOME/.config/wos
+mkdir -p $HOME/.config/rofi
+mkdir -p $HOME/.config/wos/rofi
+cp -r -n $wospath/dotfiles/* $HOME/.config/
+cp -r -n $wospath/menus $HOME/.config/wos
+cp -n $wospath/rofi/config.rasi $HOME/.config/rofi/config.rasi
+# cp -r -n $wospath/themes $HOME/.config/wos/themes
+# cp -r -n $wospath/rofi/themes $HOME/.config/wos/rofi
 
 echo -e "\nCopying themes into /usr/share/themes. This may take a while. Please be patient\n"
-cp -rn --preserve=ownership $wospath/themes/Adapta-Nord/* /usr/share/themes/
+cp -r --no-clobber --preserve=ownership $wospath/themes/Adapta-Nord/* /usr/share/themes/
 echo -e "\nUnpacking icons into /usr/share/icons. This may take a while. Please be patient\n"
 tar -xf $wospath/icons/nordarcicons.tar.gz -C /usr/share/icons/
 
@@ -103,6 +60,7 @@ SYSTEM_PKGS=(
     'nemo'
     'cinnamon-translations'
     'lxappearance'
+    'code'
     )
 
 for SYSTEM_PKG in "${SYSTEM_PKGS[@]}"; do
