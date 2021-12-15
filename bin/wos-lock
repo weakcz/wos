@@ -1,0 +1,40 @@
+#!/bin/bash
+foreground="#FFFFFF"
+outline="#000000"
+font="Impact"
+time_size="100"
+date_size="44"
+
+
+i3lock \
+    -B 10 \
+    -k \
+    --radius="250" \
+    --inside-color=#292D3E \
+    --ring-color=#4B5569 \
+    --ring-width=20 \
+    --keyhl-color=#7BA0C0 \
+    --{inside,ring}ver-color=#7BA0C0 \
+    --{verif,modif}-color=#FFFFFF \
+    --{inside,ring}wrong-color=#bf616a \
+    --{verif,wrong,modif}-size=50 \
+    --wrong-color=$foreground \
+    --line-uses-inside \
+    --{time,date,greeter}-font=$font \
+    --date-str="%A, %d.%m. %Y" \
+    --date-size=$date_size \
+    --date-color=$foreground \
+    --date-pos="960:600" \
+    --time-size=$time_size \
+    --time-color=$foreground \
+    --greeter-color=$foreground \
+    --greeter-text="Pro odemknutí napište heslo" \
+    --greeter-size=42 \
+    --verif-text="Kontroluji.." \
+    --wrong-text="Špatné heslo" \
+    --{time,date,greeter}outline-width=1 \
+    --{time,date,greeter}outline-color=$outline \
+    --no-modkey-text \
+    --no-verify \
+
+

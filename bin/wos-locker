@@ -1,0 +1,2 @@
+#!/bin/bash
+xidlehook --not-when-fullscreen --not-when-audio --timer 570 "notify-send 'Za 30 sekund se zamkne obrazovka'" '' --timer 30 "wos-lock" ''

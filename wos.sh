@@ -39,13 +39,13 @@ then
 else
     
     printf '\e[38;5;196m Foreground color: red\n'
-    echo "these $dirs do not exists"
+    echo "$dirs ..do not exists"
     printf '\e[0m'
 fi
 
     
 done
-exit
+
 
 wospath=$HOME/wos
 # for testing only
@@ -64,12 +64,19 @@ mkdir $HOME/.config/rofi
 mkdir $HOME/.config/wos/rofi
 cp -r $wospath/dotfiles/* $HOME/.config/
 cp -r $wospath/menus $HOME/.config/wos
-cp -r $wospath/themes $HOME/.config/wos/themes
-cp -r $wospath/rofi/themes $HOME/.config/wos/rofi
 cp $wospath/rofi/config.rasi $HOME/.config/rofi/config.rasi
+
+
+# cp -r $wospath/themes $HOME/.config/wos/themes
+cp -r $wospath/rofi/themes $HOME/.config/wos/rofi
+# echo -e "\nCopying themes into /usr/share/themes. This may take a while. Please be patient\n"
+# sudo cp -rn --preserve=ownership $wospath/themes/Adapta-Nord/* /usr/share/themes/
+echo -e "\nCopying icons into /usr/share/icons. This may take a while. Please be patient\n"
+tar -xf $wospath/icons/nordarcicons.tar.gz -C /usr/share/icons/
+
 echo "Done"
 
-# exit
+exit
 
 # Installation of System things
 SYSTEM_PKGS=(
@@ -118,6 +125,8 @@ for YAY in "${YAY[@]}"; do
     
 done
 
+# Set File chooser to show folders first
+# gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 
 
 
