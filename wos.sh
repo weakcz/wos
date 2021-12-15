@@ -65,13 +65,12 @@ mkdir $HOME/.config/wos/rofi
 cp -r $wospath/dotfiles/* $HOME/.config/
 cp -r $wospath/menus $HOME/.config/wos
 cp $wospath/rofi/config.rasi $HOME/.config/rofi/config.rasi
-
-
-# cp -r $wospath/themes $HOME/.config/wos/themes
+cp -r $wospath/themes $HOME/.config/wos/themes
 cp -r $wospath/rofi/themes $HOME/.config/wos/rofi
-# echo -e "\nCopying themes into /usr/share/themes. This may take a while. Please be patient\n"
-# sudo cp -rn --preserve=ownership $wospath/themes/Adapta-Nord/* /usr/share/themes/
-echo -e "\nCopying icons into /usr/share/icons. This may take a while. Please be patient\n"
+
+echo -e "\nCopying themes into /usr/share/themes. This may take a while. Please be patient\n"
+cp -rn --preserve=ownership $wospath/themes/Adapta-Nord/* /usr/share/themes/
+echo -e "\nUnpacking icons into /usr/share/icons. This may take a while. Please be patient\n"
 tar -xf $wospath/icons/nordarcicons.tar.gz -C /usr/share/icons/
 
 echo "Done"
