@@ -11,13 +11,13 @@ exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 # wos-locker &
 
 # Pozadí plochy
-# nitrogen --restore &
+nitrogen --restore &
 
 # Program na automatické připojování disků
-# udiskie &
+udiskie &
 
 # Zobrazování notifikací
-# dunst &
+dunst &
 
 # tray ikony
 # killall pamac-tray &
@@ -25,8 +25,4 @@ exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 # nm-applet &
 # blueman-applet &
 # parcellite -n &
-
-# monero miner
-# killall xmr-stak-rx
-# /home/weak/xmr-stak-rx --noTest
 

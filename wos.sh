@@ -19,6 +19,9 @@ echo "Copying configuration files"
 mkdir -p $HOME/.config/wos
 mkdir -p $HOME/.config/rofi
 mkdir -p $HOME/.config/wos/rofi
+sudo mkdir -p /usr/share/wos
+sudo mkdir -p /usr/share/wos/backgrounds
+sudo cp -r $wospath/wallpapers/* /usr/share/wos/backgrounds
 cp -r -n $wospath/dotfiles/* $HOME/.config/
 cp -r -n $wospath/menus $HOME/.config/wos
 cp -n $wospath/rofi/config.rasi $HOME/.config/rofi/config.rasi
@@ -26,9 +29,9 @@ cp -n $wospath/rofi/config.rasi $HOME/.config/rofi/config.rasi
 # cp -r -n $wospath/rofi/themes $HOME/.config/wos/rofi
 
 echo -e "\nCopying themes into /usr/share/themes. This may take a while. Please be patient\n"
-cp -r --no-clobber --preserve=ownership $wospath/themes/Adapta-Nord/* /usr/share/themes/
+# cp -r --no-clobber --preserve=ownership $wospath/themes/Adapta-Nord/* /usr/share/themes/
 echo -e "\nUnpacking icons into /usr/share/icons. This may take a while. Please be patient\n"
-tar -xf $wospath/icons/nordarcicons.tar.gz -C /usr/share/icons/
+# tar -xf $wospath/icons/nordarcicons.tar.gz -C /usr/share/icons/
 
 echo "Done"
 
