@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+# To Do list
+# ==========
+#
+# [] Theme sddm
+# [] Change resolution to 1920x1080
+# [] Add Programs i will use
+# [] Make script ask if this will be installed on desktop or notebook
+#    - if installed on notebook add notebook realted programs and scripts to qtile bar (battery and brightness widget)           
+# [] Add Bling - make script more visually appealing
+
 function weakos (
 echo -e "\n                                                     "
 echo -e "   ██╗    ██╗███████╗ █████╗ ██╗  ██╗ ██████╗ ███████╗ "
@@ -12,7 +22,7 @@ echo -e "\n                 Installation script                 \n"
 )
 
 weakos
-
+echo $SHELL
 wospath=$HOME/wos
 echo "First lets update system"
 sudo pacman -Syyu
@@ -53,6 +63,15 @@ SYSTEM_PKGS=(
     'qt5ct'
     'i3lock-color'
     'lolcat'
+    '# Gaming software'
+    'steam'
+    'lutris'
+    'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls \
+    mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error \
+    lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo \
+    sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama \
+    ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 \
+    lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'
     )
 
 for SYSTEM_PKG in "${SYSTEM_PKGS[@]}"; do
@@ -64,6 +83,7 @@ done
 YAY=(
     # 'nerd-fonts-complete'
     'qt5-styleplugins'
+    'oh-my-zsh-git'
     'font-manager'
     'ttf-ubuntu-font-family'
     'nerd-fonts-ubuntu-mono'
@@ -86,27 +106,34 @@ sudo mkdir -p /usr/share/wos
 sudo mkdir -p /usr/share/wos/backgrounds
 sudo cp -r $wospath/wallpapers/* /usr/share/wos/backgrounds
 cp -r -n $wospath/dotfiles/.config/* $HOME/.config/
-cp -r $wospath/dotfiles/.gtkrc-2.0 $HOME
+cp $wospath/dotfiles/.gtkrc-2.0 $HOME
+cp $wospath/dotfiles/.bashrc $HOME
+cp $wospath/dotfiles/.zshrc $HOME
 cp -r -n $wospath/menus $HOME/.config/wos
 cp -n $wospath/rofi/config.rasi $HOME/.config/rofi/config.rasi
 cp -r -n $wospath/rofi/themes $HOME/.config/wos/rofi
 
 # Copy lock and locker script into .local/bin
-
 sudo cp -r $wospath/bin/* /usr/bin
-
-
 echo -e "\n Configuration files copied"
 
 echo -e "\nUnpacking themes into /usr/share/themes. This may take a while. Please be patient\n"
 sudo tar -xf $wospath/themes/adapta-nord.tar.gz -C /usr/share/themes/
 echo -e "\nUnpacking icons into /usr/share/icons. This may take a while. Please be patient\n"
 sudo tar -xf $wospath/icons/nordarcicons.tar.gz -C /usr/share/icons/
-echo -e "Changing shell from bash to zsh\n\n"
-chsh -s $(which zsh)
-echo -e "Done\n"
+
+# Test if zsh is default shell. If not change it to default shell
+if [ $SHELL == "/usr/bin/zsh" ] 
+then
+    echo -e "Changing shell from bash to zsh\n\n"
+    sudo chsh $USER -s $(which zsh)
+    echo -e "Done\n"
+fi
+sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
+sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/
+
 # weakos
-echo -e "Installation of weakOS is now done. All you need to do is reboot your computer"
+echo -e "Installation of weakOS is now done. All you need to do is reboot your computer\n"
 
 
 
