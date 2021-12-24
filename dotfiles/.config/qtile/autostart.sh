@@ -22,7 +22,7 @@ dunst &
 # tray ikony
 # killall pamac-tray &
 # pamac-tray &
-# nm-applet &
+nm-applet &
 # blueman-applet &
 # parcellite -n &
 

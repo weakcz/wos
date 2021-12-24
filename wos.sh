@@ -65,7 +65,6 @@ SYSTEM_PKGS=(
     'lxappearance'
     'code'
     'qt5ct'
-    'i3lock-color'
     'lolcat'
     'xf86-video-qxl'
     'xf86-video-intel'
@@ -91,7 +90,9 @@ cd $wospath
 
 YAY=(
     # 'nerd-fonts-complete'
+    'i3lock-color'
     'qt5-styleplugins'
+
     'oh-my-zsh-git'
     'font-manager'
     'ttf-ubuntu-font-family'
@@ -143,7 +144,7 @@ then
 fi
 
 echo -e "\nEnabling services\n"
-sudo systemctl enable --now networkmanager
+sudo systemctl enable --now NetworkManager
 sudo systemctl enable sddm
 echo -e "\nServices Enabled\n"
 # weakos
