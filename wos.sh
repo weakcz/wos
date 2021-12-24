@@ -157,7 +157,7 @@ sudo rm /usr/share/wayland-sessions/qtile-wayland.desktop
 
 # copy default configuration files
 sudo cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
-
+sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 # weakos
 echo -e "Installation of weakOS is now done. All you need to do is reboot your computer\n"
 
