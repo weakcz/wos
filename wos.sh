@@ -35,6 +35,8 @@ echo "System Updated \n"
 
 # Installation of System things
 SYSTEM_PKGS=(
+    'nano'
+    'xorg'
     'qtile'
     'nitrogen'
     'picom'
@@ -78,6 +80,13 @@ for SYSTEM_PKG in "${SYSTEM_PKGS[@]}"; do
     sudo pacman -S --noconfirm --needed "$SYSTEM_PKG"
     
 done
+
+echo -e "\n Installing AUR helper YAY"
+cd ~
+git clone "https://aur.archlinux.org/yay.git"
+cd ${HOME}/yay
+makepkg -si --noconfirm
+cd $wospath
 
 YAY=(
     # 'nerd-fonts-complete'
@@ -130,15 +139,6 @@ then
     sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
     sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
     echo -e "Done\n"
-fi
-
-# check if sddm is installed then change it into ligtdm display manager
-sddm=/usr/bin/sddm
-if test -f "$sddm"; then
-    echo -e "\nSddm is installed. Changing into Lightdm"
-    #sudo systemctl disable sddm
-    #sudo systemctl enable lightdm
-    echo -e "\nDone."
 fi
 
 
