@@ -114,6 +114,7 @@ mkdir -p $HOME/.config/rofi
 mkdir -p $HOME/.config/wos/rofi
 sudo mkdir -p /usr/share/wos
 sudo mkdir -p /usr/share/wos/backgrounds
+sudo mkdir -p /etc/sddm.conf.d
 sudo cp -r $wospath/wallpapers/* /usr/share/wos/backgrounds
 cp -r -n $wospath/dotfiles/.config/* $HOME/.config/
 cp $wospath/dotfiles/.gtkrc-2.0 $HOME
@@ -147,6 +148,16 @@ echo -e "\nEnabling services\n"
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable sddm
 echo -e "\nServices Enabled\n"
+
+# Setup sddm
+# =================================================================
+
+# delete qtile wayland session
+sudo rm /usr/share/wayland-sessions/qtile-wayland.desktop
+
+# copy default configuration files
+sudo cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
+
 # weakos
 echo -e "Installation of weakOS is now done. All you need to do is reboot your computer\n"
 
