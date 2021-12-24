@@ -35,6 +35,7 @@ echo "System Updated \n"
 
 # Installation of System things
 SYSTEM_PKGS=(
+    'alacritty'
     'nano'
     'xorg'
     'qtile'
@@ -55,6 +56,7 @@ SYSTEM_PKGS=(
     'udiskie'
     'network-manager-applet'
     'networkmanager'
+    'dhclient'
     'webkit2gtk'
     'pulseaudio'
     'pavucontrol'
@@ -140,7 +142,10 @@ then
     echo -e "Done\n"
 fi
 
-
+echo -e "\nEnabling services\n"
+sudo systemctl enable --now networkmanager
+sudo systemctl enable sddm
+echo -e "\nServices Enabled\n"
 # weakos
 echo -e "Installation of weakOS is now done. All you need to do is reboot your computer\n"
 
