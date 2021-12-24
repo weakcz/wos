@@ -149,6 +149,9 @@ sudo systemctl enable --now NetworkManager
 sudo systemctl enable sddm
 echo -e "\nServices Enabled\n"
 
+# Add qt5ctl variable 
+echo "QT_QPA_PLATFORMTHEME=qt5ct" >> /etc/environment
+
 # Setup sddm
 # =================================================================
 
