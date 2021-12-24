@@ -29,10 +29,10 @@ sudo pacman -Syyu
 echo "System Updated \n"
 
 #Add parallel downloading
-sed -i 's/^#Para/Para/' /etc/pacman.conf
+sudo sed -i 's/^#Para/Para/' /etc/pacman.conf
 
 #Enable multilib
-sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Sy --noconfirm
 
 
@@ -154,9 +154,10 @@ sudo systemctl enable --now NetworkManager
 sudo systemctl enable sddm
 echo -e "\nServices Enabled\n"
 
-# Add qt5ctl variable 
-echo "QT_QPA_PLATFORMTHEME=qt5ct" >> /etc/environment
-
+# Add qt5ctl variable into /etc/environment
+sudo chown $USER:$USER /etc/environment
+sudo echo "QT_QPA_PLATFORMTHEME=qt5ct" >> /etc/environment
+sudo chown root:root /etc/environment
 # Setup sddm
 # =================================================================
 
