@@ -48,7 +48,8 @@ SYSTEM_PKGS=(
     'dunst'
     'rofi'
     'lsd'
-    'sddm'
+    'lghtdm'
+    'lightdm-gtk-greeter'
     'udisks2'
     'udiskie'
     'network-manager-applet'
@@ -63,15 +64,13 @@ SYSTEM_PKGS=(
     'qt5ct'
     'i3lock-color'
     'lolcat'
-    '# Gaming software'
+    'xf86-video-qxl'
+    'xf86-video-intel'
+    'xf86-video-amdgpu'
+    'xf86-video-nouveau'
     'steam'
     'lutris'
-    'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls \
-    mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error \
-    lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo \
-    sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama \
-    ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 \
-    lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'
+    'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'
     )
 
 for SYSTEM_PKG in "${SYSTEM_PKGS[@]}"; do
@@ -123,14 +122,25 @@ echo -e "\nUnpacking icons into /usr/share/icons. This may take a while. Please 
 sudo tar -xf $wospath/icons/nordarcicons.tar.gz -C /usr/share/icons/
 
 # Test if zsh is default shell. If not change it to default shell
-if [ $SHELL == "/usr/bin/zsh" ] 
+if [ $SHELL != "/usr/bin/zsh" ] 
 then
     echo -e "Changing shell from bash to zsh\n\n"
     sudo chsh $USER -s $(which zsh)
+    
+    sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
+    sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/ 
     echo -e "Done\n"
 fi
-sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
-sudo ln -s /usr/share/zsh/plugins/zsh-autosuggestions /usr/share/oh-my-zsh/custom/plugins/
+
+# check if sddm is installed then change it into ligtdm display manager
+sddm=/usr/bin/sddm
+if test -f "$sddm"; then
+    echo -e "\nSddm is installed. Changing into Lightdm"
+    #sudo systemctl disable sddm
+    #sudo systemctl enable lightdm
+    echo -e "\nDone."
+fi
+
 
 # weakos
 echo -e "Installation of weakOS is now done. All you need to do is reboot your computer\n"
