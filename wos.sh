@@ -75,6 +75,7 @@ SYSTEM_PKGS=(
     'xf86-video-intel'
     'xf86-video-amdgpu'
     'xf86-video-nouveau'
+    'xdg-user-dirs'
     'steam'
     'lutris'
     'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'
@@ -158,15 +159,18 @@ echo -e "\nServices Enabled\n"
 sudo chown $USER:$USER /etc/environment
 sudo echo "QT_QPA_PLATFORMTHEME=qt5ct" >> /etc/environment
 sudo chown root:root /etc/environment
+
 # Setup sddm
 # =================================================================
-
 # delete qtile wayland session
 sudo rm /usr/share/wayland-sessions/qtile-wayland.desktop
 
 # copy default configuration files
 sudo cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
 sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
+
+
+
 # weakos
 echo -e "Installation of weakOS is now done. All you need to do is reboot your computer\n"
 
