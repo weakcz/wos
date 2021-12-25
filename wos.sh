@@ -96,6 +96,7 @@ cd $wospath
 
 YAY=(
     # 'nerd-fonts-complete'
+    'archlinux-themes-sddm'
     'i3lock-color'
     'qt5-styleplugins'
 
