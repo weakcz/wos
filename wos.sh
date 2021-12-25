@@ -35,6 +35,10 @@ sudo sed -i 's/^#Para/Para/' /etc/pacman.conf
 sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
 pacman -Sy --noconfirm
 
+# Changing locale to Czech Language
+sudo sed -i 's/^#cs_CZ.UTF-8 UTF-8/cs_CZ.UTF-8 UTF-8/g' /etc/locale.gen
+sudo sed -i 's/^en_US.UTF-8 UTF-8/#en_US.UTF-8 UTF-8/g' /etc/locale.gen
+sudo locale-gen
 
 # exit
 
@@ -42,6 +46,7 @@ pacman -Sy --noconfirm
 SYSTEM_PKGS=(
     'alacritty'
     'nano'
+    'micro'
     'xorg'
     'qtile'
     'nitrogen'
@@ -169,6 +174,7 @@ sudo rm /usr/share/wayland-sessions/qtile-wayland.desktop
 # copy default configuration files
 sudo cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
 sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
+
 
 
 
