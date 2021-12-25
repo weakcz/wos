@@ -24,23 +24,24 @@ echo -e "\n                 Installation script                 \n"
 weakos
 echo $SHELL
 wospath=$HOME/wos
-echo "First lets update system"
-sudo pacman -Syyu
-echo "System Updated \n"
-
-#Add parallel downloading
-sudo sed -i 's/^#Para/Para/' /etc/pacman.conf
-
-#Enable multilib
-sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-pacman -Sy --noconfirm
 
 # Changing locale to Czech Language
 sudo sed -i 's/^#cs_CZ.UTF-8 UTF-8/cs_CZ.UTF-8 UTF-8/g' /etc/locale.gen
 sudo sed -i 's/^en_US.UTF-8 UTF-8/#en_US.UTF-8 UTF-8/g' /etc/locale.gen
 sudo locale-gen
 
-# exit
+# Enable multithreading for quicker installations
+nc=$(grep -c ^processor /proc/cpuinfo)
+sudo sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
+sudo sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
+
+#Add parallel downloading
+sudo sed -i 's/^#Para/Para/' /etc/pacman.conf
+
+#Enable multilib
+sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
+sudo pacman -Syyu --noconfirm
+
 
 # Installation of System things
 SYSTEM_PKGS=(
