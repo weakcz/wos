@@ -1,15 +1,5 @@
 #!/usr/bin/env bash
 
-# To Do list
-# ==========
-#
-# [] Theme sddm
-# [] Change resolution to 1920x1080
-# [] Add Programs i will use
-# [] Make script ask if this will be installed on desktop or notebook
-#    - if installed on notebook add notebook realted programs and scripts to qtile bar (battery and brightness widget)           
-# [] Add Bling - make script more visually appealing
-
 function weakos (
 echo -e "\n                                                     "
 echo -e "   ██╗    ██╗███████╗ █████╗ ██╗  ██╗ ██████╗ ███████╗ "
@@ -24,23 +14,49 @@ echo -e "\n                 Installation script                 \n"
 weakos
 echo $SHELL
 wospath=$HOME/wos
+sudo pacman -S --noconfirm terminus-font
+setfont ter-v22b
+sudo echo "FONT=ter-v22b" >> /etc/vconsole
 
-# Enable multithreading for quicker installations
+# Přidáme uživatele do skupin
+sudo usermod -a -G sys,log,network,floppy,scanner,power,rfkill,users,video,storage,optical,lp,audio,wheel,adm $USER
+
+# Aktivujeme více jader pro sestavování balíčků
 nc=$(grep -c ^processor /proc/cpuinfo)
 sudo sed -i "s/#MAKEFLAGS=\"-j2\"/MAKEFLAGS=\"-j$nc\"/g" /etc/makepkg.conf
 sudo sed -i "s/COMPRESSXZ=(xz -c -z -)/COMPRESSXZ=(xz -c -T $nc -z -)/g" /etc/makepkg.conf
 
-#Add parallel downloading
+# Přidáme paralelní stahování do konfigurace pacmanu
 sudo sed -i 's/^#Para/Para/' /etc/pacman.conf
 
-#Enable multilib
+# Zapneme multilib v nastavení pacmanu
 sudo sed -i "/\[multilib\]/,/Include/"'s/^#//' /etc/pacman.conf
-sudo pacman -Syyu --noconfirm
+sudo pacman -Sy --noconfirm
+
+# Přepneme systém do češtiny
+sudo sed -i 's/^#cs_CZ.UTF-8 UTF-8/cs_CZ.UTF-8 UTF-8/g' /etc/locale.gen
+sudo sed -i 's/^en_US.UTF-8 UTF-8/#en_US.UTF-8 UTF-8/g' /etc/locale.gen
+sudo locale-gen
+sudo sed -i 's/^LANG=.*/LANG=cs_CZ.UTF-8/g' /etc/locale.conf
+sudo chown $USER /etc/locale.conf
+sudo echo "LC_ADDRESS=cs_CZ.UTF-8" >> /etc/locale.conf
+sudo echo "LC_IDENTIFICATION=cs_CZ.UTF-8" >> /etc/locale.conf
+sudo echo "LC_MEASUREMENT=cs_CZ.UTF-8" >> /etc/locale.conf
+sudo echo "LC_MONETARY=cs_CZ.UTF-8" >> /etc/locale.conf
+sudo echo "LC_NAME=cs_CZ.UTF-8" >> /etc/locale.conf
+sudo echo "LC_NUMERIC=cs_CZ.UTF-8" >> /etc/locale.conf
+sudo echo "LC_PAPER=cs_CZ.UTF-8" >> /etc/locale.conf
+sudo echo "LC_TELEPHONE=cs_CZ.UTF-8" >> /etc/locale.conf
+sudo echo "LC_TIME=cs_CZ.UTF-8" >> /etc/locale.conf
+sudo chown root:root /etc/locale.conf
 
 
-# Installation of System things
+# Instalace systémových aplikací
 SYSTEM_PKGS=(
     'alacritty'
+    'blueman'
+    'bluez'
+    'bluez-utils'
     'nano'
     'micro'
     'xorg'
@@ -67,6 +83,7 @@ SYSTEM_PKGS=(
     'pulseaudio'
     'pavucontrol'
     'nemo'
+    'file-roller'
     'cinnamon-translations'
     'lxappearance'
     'code'
@@ -79,16 +96,16 @@ SYSTEM_PKGS=(
     'xdg-user-dirs'
     'steam'
     'lutris'
-    'wine-staging giflib lib32-giflib libpng lib32-libpng libldap lib32-libldap gnutls lib32-gnutls mpg123 lib32-mpg123 openal lib32-openal v4l-utils lib32-v4l-utils libpulse lib32-libpulse libgpg-error lib32-libgpg-error alsa-plugins lib32-alsa-plugins alsa-lib lib32-alsa-lib libjpeg-turbo lib32-libjpeg-turbo sqlite lib32-sqlite libxcomposite lib32-libxcomposite libxinerama lib32-libgcrypt libgcrypt lib32-libxinerama ncurses lib32-ncurses opencl-icd-loader lib32-opencl-icd-loader libxslt lib32-libxslt libva lib32-libva gtk3 lib32-gtk3 gst-plugins-base-libs lib32-gst-plugins-base-libs vulkan-icd-loader lib32-vulkan-icd-loader'
+    'wine-staging'
     )
 
 for SYSTEM_PKG in "${SYSTEM_PKGS[@]}"; do
-    echo "INSTALLING: ${SYSTEM_PKG}"
+    echo "Instaluji: ${SYSTEM_PKG}"
     sudo pacman -S --noconfirm --needed "$SYSTEM_PKG"
     
 done
 
-echo -e "\n Installing AUR helper YAY"
+echo -e "\nInstaluj yay pro instalaci programů z Arch User Repository (AUR)"
 cd ~
 git clone "https://aur.archlinux.org/yay.git"
 cd ${HOME}/yay
@@ -100,7 +117,7 @@ YAY=(
     'archlinux-themes-sddm'
     'i3lock-color'
     'qt5-styleplugins'
-
+    'pamac-aur'
     'oh-my-zsh-git'
     'font-manager'
     'ttf-ubuntu-font-family'
@@ -108,15 +125,16 @@ YAY=(
     )
 
 for YAY in "${YAY[@]}"; do
-    echo "INSTALLING: ${YAY}"
+    echo "Instaluji: ${YAY}"
     yay -S --noconfirm $YAY
     
 done
 
-# Set File chooser to show folders first
+# Nastavíme aby se zobrazovaly adrasáře jako první ve výběrovém okně pro soubory
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 
-echo "Copying configuration files"
+# Zkopírujeme konfigurační soubory do systém
+echo "Kopíruj konfigurační soubory"
 mkdir -p $HOME/.config/wos
 mkdir -p $HOME/.config/rofi
 mkdir -p $HOME/.config/wos/rofi
@@ -125,23 +143,23 @@ sudo mkdir -p /usr/share/wos/backgrounds
 sudo mkdir -p /etc/sddm.conf.d
 sudo cp -r $wospath/wallpapers/* /usr/share/wos/backgrounds
 cp -r -n $wospath/dotfiles/.config/* $HOME/.config/
+cp -r -n $wospath/scripts $HOME/.config/wos/
 cp $wospath/dotfiles/.gtkrc-2.0 $HOME
 cp $wospath/dotfiles/.bashrc $HOME
 cp $wospath/dotfiles/.zshrc $HOME
 cp -r -n $wospath/menus $HOME/.config/wos
 cp -n $wospath/rofi/config.rasi $HOME/.config/rofi/config.rasi
-cp -r -n $wospath/rofi/themes $HOME/.config/wos/rofi
-
-# Copy lock and locker script into .local/bin
+cp -r -n $wospath/rofi $HOME/.config/wos
 sudo cp -r $wospath/bin/* /usr/bin
-echo -e "\n Configuration files copied"
+echo -e "\n Konfigurační soubory rozbaleny"
 
+# Rozbalíme témata a ikony
 echo -e "\nUnpacking themes into /usr/share/themes. This may take a while. Please be patient\n"
 sudo tar -xf $wospath/themes/adapta-nord.tar.gz -C /usr/share/themes/
 echo -e "\nUnpacking icons into /usr/share/icons. This may take a while. Please be patient\n"
 sudo tar -xf $wospath/icons/nordarcicons.tar.gz -C /usr/share/icons/
 
-# Test if zsh is default shell. If not change it to default shell
+# Zjistíme, zda-li je zsh jako defaultní shell, když ne, tak ho nastavíme jako defaultní
 if [ $SHELL != "/usr/bin/zsh" ] 
 then
     echo -e "Changing shell from bash to zsh\n\n"
@@ -152,34 +170,35 @@ then
     echo -e "Done\n"
 fi
 
-echo -e "\nEnabling services\n"
+# Spustíme služby
+echo -e "\nZapínám Služby\n"
+sudo systemctl enable bluetooth.service
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable sddm
-echo -e "\nServices Enabled\n"
+echo -e "\nSlužby Zapnuty\n"
 
-# Add qt5ctl variable into /etc/environment
+# Přidáme qt5ct proměnnou do /etc/environment aby byly GTK a QT5 témata jednotná
 sudo chown $USER:$USER /etc/environment
 sudo echo "QT_QPA_PLATFORMTHEME=qt5ct" >> /etc/environment
 sudo chown root:root /etc/environment
 
-# Setup sddm
+# Nastavíme klávesnici na českou
+sudo localectl set-x11-keymap cz
+
+# Nastavíme sddm (Login Manažera)
 # =================================================================
-# delete qtile wayland session
+# Smažeme wayland verzi pro qtile abychom se mohli přihlašovat pouze do X11
 sudo rm /usr/share/wayland-sessions/qtile-wayland.desktop
 
-# copy default configuration files
+# Zkopírujeme konfigurační soubor
 sudo cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
+
+# Nastavíme téma pro sddm
 sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 
-# Changing locale to Czech Language
-sudo sed -i 's/^#cs_CZ.UTF-8 UTF-8/cs_CZ.UTF-8 UTF-8/g' /etc/locale.gen
-sudo sed -i 's/^en_US.UTF-8 UTF-8/#en_US.UTF-8 UTF-8/g' /etc/locale.gen
 
-sudo locale-gen
-
-
-# weakos
-echo -e "Installation of weakOS is now done. All you need to do is reboot your computer\n"
+# A máme hotovo
+echo -e "Instalace weakOSu je hotová. Nyní stačí restartovat počítač a weakOS bude aktivní.\n"
 
 
 

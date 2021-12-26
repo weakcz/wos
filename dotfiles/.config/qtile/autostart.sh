@@ -20,9 +20,7 @@ udiskie &
 dunst &
 
 # tray ikony
-# killall pamac-tray &
-# pamac-tray &
+killall pamac-tray &
+pamac-tray &
 nm-applet &
-# blueman-applet &
-# parcellite -n &
-
+blueman-applet &

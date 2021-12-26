@@ -101,6 +101,6 @@ alias ls="lsd -l --group-dirs first"
 alias la="lsd -la --group-dirs first"
 alias wos="wos/wos.sh"
 # Random color script
-$HOME/wos/scripts/ferengi-cz.sh | lolcat
+$HOME/.config/wos/scripts/ferengi-cz.sh | lolcat
 
 

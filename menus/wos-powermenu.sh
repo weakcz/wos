@@ -2,7 +2,7 @@
 
 
 
-rofi_command="rofi -theme $HOME/.config/wos/themes/$1.rasi"
+rofi_command="rofi -theme $HOME/.config/wos/rofi/themes/$1.rasi"
 
 # Power Options
 reboot="  Restartovat"
