@@ -17,9 +17,9 @@ weakos
 wospath=$HOME/wos
 sudo pacman -S --noconfirm terminus-font
 setfont ter-v22b
-sudo chown $USER /etc/vconsole
+sudo chown $USER:$USER /etc/vconsole
 sudo echo "FONT=ter-v22b" >> /etc/vconsole
-sudo chown root /etc/vconsole
+sudo chown root:root /etc/vconsole
 
 # Přidáme uživatele do skupin
 sudo usermod -a -G sys,log,network,floppy,scanner,power,rfkill,users,video,storage,optical,lp,audio,wheel,adm $USER
@@ -127,8 +127,10 @@ SYSTEM_PKGS=(
 for SYSTEM_PKG in "${SYSTEM_PKGS[@]}"; do
     echo -e "\nInstaluji: ${SYSTEM_PKG}\n"
     sudo pacman -S --noconfirm --needed "$SYSTEM_PKG"
-    
 done
+
+# Jestliže je baterie, nainstalujeme program na úsporu baterie
+[ -d "/sys/class/power_supply/BAT0" ] && sudo pacman -S --noconfirm --needed tlp
 
 echo -e "\nInstaluji yay pro instalaci programů z Arch User Repository (AUR)"
 cd ~
@@ -204,6 +206,8 @@ sudo systemctl enable cups.service
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable sddm
 sudo systemctl enable ufw
+# Jestliže je přítomna Baterie zapneme službu na úsporu baterie
+[ -d "/sys/class/power_supply/BAT0" ] && sudo systemctl enable tlp.service
 echo -e "\nSlužby Zapnuty\n"
 
 # Přidáme qt5ct proměnnou do /etc/environment aby byly GTK a QT5 témata jednotná
@@ -229,8 +233,8 @@ sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 cd $HOME
 chmod +777 -R $HOME/wos
 chmod +777 -R $HOME/yay
-rm $HOME/yay
-rm $HOME/wos
+rm -r $HOME/yay
+rm -r $HOME/wos
 
 # A máme hotovo
 echo -e "Instalace weakOSu je hotová. Nyní stačí restartovat počítač a weakOS bude aktivní.\n"
