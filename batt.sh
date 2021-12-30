@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
 
+battery=$(upower -i $(upower -e | grep BAT))
+echo $battery
 
-[ -d "/sys/class/power_supply/BAT0" ] && echo "Directory exists."
+if [ -z "$battery" ]
+then
+      echo "battery is not installed"
+else
+      echo "battery is installed"
+fi
