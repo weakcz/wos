@@ -198,15 +198,6 @@ screens = [
             [
                #    Spacer For using with Termux and Xserver SDL
                #  widget.Spacer(length=50),
-                widget.TextBox(
-                    text = "  ",
-                    font="FontAwesome",
-                    fontsize=32,
-                    padding = 0,
-                    foreground = "#7BA0C0",
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn("xfce4-appfinder")}
-                    ),
-
                 widget.GroupBox(
                     # highlight_color = "#5E81AC",
                     highlight_method = "line",

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+content=$(wget $1 -q -O -)
+alt=$(echo $content| pup 'div.gdtm:first-of-type img attr{alt}')
+next_one=$(echo $content | pup ':parent-of([alt="'$alt'"])')
+next=$(echo $next_one | pup 'a attr{href}')
+first=$(wget $next -q -O -)
+picture=$(echo $first | pup 'img#img attr{src}')
+start=$(echo $first | pup 'div#i2 div span:first-of-type text{}')
+end=$(echo $first | pup 'div#i2 div span:last-of-type text{}')
+title=$(echo $content | pup 'h1#gn text{}')
+echo $title
+for i in $(eval echo "{$start..$end}") 
+    do
+        content=$(wget $next -q -O -)
+        
+        next=$(echo $content | pup 'div#i2 a#next attr{href}')
+        picture=$(echo $content | pup 'img#img attr{src}')
+       num=$(printf "%04d" $i)
+       wget -nvc -O $num".jpeg"  $picture
+    done
+
+
+

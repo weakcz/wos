@@ -17,7 +17,9 @@ weakos
 wospath=$HOME/wos
 sudo pacman -S --noconfirm terminus-font
 setfont ter-v22b
+sudo chown $USER /etc/vconsole
 sudo echo "FONT=ter-v22b" >> /etc/vconsole
+sudo chown root /etc/vconsole
 
 # Přidáme uživatele do skupin
 sudo usermod -a -G sys,log,network,floppy,scanner,power,rfkill,users,video,storage,optical,lp,audio,wheel,adm $USER
@@ -89,6 +91,7 @@ SYSTEM_PKGS=(
     'nitrogen'
     'pavucontrol'
     'picom'
+    'polkit-gnome'
     'pulseaudio'
     'pulseaudio-bluetooth'
     'qalculate-gtk'
@@ -222,6 +225,12 @@ sudo cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
 # Nastavíme téma pro sddm
 sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 
+# Vyčistíme adresáře, které po instalaci zbyly
+cd $HOME
+chmod +777 -R $HOME/wos
+chmod +777 -R $HOME/yay
+rm $HOME/yay
+rm $HOME/wos
 
 # A máme hotovo
 echo -e "Instalace weakOSu je hotová. Nyní stačí restartovat počítač a weakOS bude aktivní.\n"
