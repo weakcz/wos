@@ -8,7 +8,7 @@ picom --experimental-backends --backend glx &
 exec /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
 # Spustíme zámek obrazovky
-# wos-locker &
+wos-locker &
 
 # Pozadí plochy
 nitrogen --restore &
