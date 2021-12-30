@@ -21,6 +21,8 @@ sudo chmod 777 /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
 sudo chmod 644 /etc/vconsole.conf
 
+# Proměnná na kontrolu přítomnosti baterie
+battery=$(upower -i $(upower -e | grep BAT))
 
 # Přidáme uživatele do skupin
 sudo usermod -a -G sys,log,network,floppy,scanner,power,rfkill,users,video,storage,optical,lp,audio,wheel,adm $USER
@@ -148,7 +150,7 @@ for SYSTEM_PKG in "${SYSTEM_PKGS[@]}"; do
 done
 
 # Jestliže je baterie, nainstalujeme program na úsporu baterie
-[ -d "/sys/class/power_supply/BAT0" ] && sudo pacman -S --noconfirm --needed tlp
+[ -n "$battery" ] && sudo pacman -S --noconfirm --needed tlp
 
 echo -e "\nInstaluji yay pro instalaci programů z Arch User Repository (AUR)"
 cd ~
@@ -200,7 +202,7 @@ cp -r -n $wospath/rofi $HOME/.config/wos
 sudo cp -r $wospath/bin/* /usr/bin
 
 # Zjistíme zda se jedná o laptop či desktop a vytvoříme potřebnou konfiguraci
-[ -d "/sys/class/power_supply/BAT0" ] && cp /home/$USER/.config/qtile/config-laptop.py /home/$USER/.config/qtile/config.py || cp /home/$USER/.config/qtile/config-desktop.py /home/$USER/.config/qtile/config.py
+[ -d -n "$battery" ] && cp /home/$USER/.config/qtile/config-laptop.py /home/$USER/.config/qtile/config.py || cp /home/$USER/.config/qtile/config-desktop.py /home/$USER/.config/qtile/config.py
 
 # Rozbalíme témata a ikony
 echo -e "\nRozbaluji témata do /usr/share/themes. Tohle může chvíli trvat, mějte strpení\n"
@@ -227,7 +229,7 @@ sudo systemctl enable --now NetworkManager
 sudo systemctl enable sddm
 sudo systemctl enable ufw
 # Jestliže je přítomna Baterie zapneme službu na úsporu baterie
-[ -d "/sys/class/power_supply/BAT0" ] && sudo systemctl enable tlp.service
+[ -d -n "$battery" ] && sudo systemctl enable tlp.service
 echo -e "\nSlužby Zapnuty\n"
 
 # Přidáme qt5ct proměnnou do /etc/environment aby byly GTK a QT5 témata jednotná
