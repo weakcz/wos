@@ -13,7 +13,6 @@ echo -e "\n                 Instalační  script                 \n"
 
 weakos
 [ -d "/sys/class/power_supply/BAT0" ] && echo "Directory exists."
-exit
 
 wospath=$HOME/wos
 sudo pacman -S --noconfirm terminus-font
@@ -174,6 +173,9 @@ cp -r -n $wospath/menus $HOME/.config/wos
 cp -n $wospath/rofi/config.rasi $HOME/.config/rofi/config.rasi
 cp -r -n $wospath/rofi $HOME/.config/wos
 sudo cp -r $wospath/bin/* /usr/bin
+
+# Zjistíme zda se jedná o laptop či desktop a vytvoříme potřebnou konfiguraci
+[ -d "/sys/class/power_supply/BAT0" ] && cp /home/$USER/.config/qtile/config-laptop.py /home/$USER/.config/qtile/config.py || cp /home/$USER/.config/qtile/config-desktop.py /home/$USER/.config/qtile/config.py
 
 # Rozbalíme témata a ikony
 echo -e "\nRozbaluji témata do /usr/share/themes. Tohle může chvíli trvat, mějte strpení\n"

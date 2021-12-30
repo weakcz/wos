@@ -1,5 +1,5 @@
 # weakOS
-# Laptop qtile config
+# Desktop qtile config
 
 # Copyright (c) 2010 Aldo Cortesi
 # Copyright (c) 2010, 2014 dequis
@@ -34,7 +34,7 @@ import socket
 import subprocess
 from libqtile import qtile
 from libqtile import images
-from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen
+from libqtile.config import Click, Drag, Group, KeyChord, Key, Match, Screen, ScratchPad, DropDown
 from libqtile.command import lazy
 from libqtile import layout, bar, widget, hook
 from libqtile.lazy import lazy
@@ -95,15 +95,20 @@ keys = [
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawn("rofi -show drun -show-icons"),
-        desc="Spawn a command using a prompt widget"),
+    Key([mod], "r", lazy.spawn("rofi -show drun -show-icons"), desc="Spawn a command using a prompt widget"),
+    Key([], "Print", lazy.spawn("scrot '%d-%m-%y_%H-%M-%S-Snímek_Obrazovky.png' -e 'mv $f ~/Obrázky/Screenshots/'"), desc="Takes Screenshot"),
+    
+    # For testing powermenu
+    Key([mod], "p", lazy.spawn("/home/weak/.config/wos/menus/wos-powermenu.sh wos-powermenu-fullscreen"), desc=""),
+    Key([mod], "c", lazy.spawn("wos-lock"), desc="Zámek Obrazovky"),
+    
 
     ######################################################################################################
     # Shortcuts for Applications                                                                         #
     ######################################################################################################
     
     # Firefox
-    Key(["mod1"], "f", lazy.spawn("firefox"), desc="Firefox"),
+    Key(["mod1"], "w", lazy.spawn("firefox"), desc="firefox"),
     # Lutris
     Key(["mod1"], "l", lazy.spawn("lutris"), desc="Lutris"),
     # Filemanager - Nemo
@@ -111,7 +116,7 @@ keys = [
     # Sound Control - Pavucontrol
     Key(["mod1"], "p", lazy.spawn("pavucontrol"), desc="Pavucontrol"),
     # Oblogout
-    Key(["mod1", "control"], "Delete", lazy.spawn("oblogout"), desc="Oblogout"),
+    Key(["mod1", "control"], "Delete", lazy.spawn("/home/weak/.config/wos/menus/wos-powermenu.sh wos-powermenu-fullscreen"), desc="Oblogout"),
     
     
 
@@ -132,6 +137,8 @@ workspaces = [
 ]
 
 groups = []
+
+
 for workspace in workspaces:
     matches = workspace["matches"] if "matches" in workspace else None
     lay = workspace["layout"] if "layout" in workspace else None
@@ -153,9 +160,9 @@ layout_theme = init_layout_theme()
 
 layouts = [
     # layout.Columns(**layout_theme),
-    # layout.Max(**layout_theme),
+    layout.Max(**layout_theme),
     # layout.Stack(num_stacks=2, **layout_theme),
-    # layout.Bsp(**layout_theme),
+    layout.Bsp(**layout_theme),
     # layout.Matrix(**layout_theme),
     layout.MonadTall(**layout_theme),
     layout.MonadWide(**layout_theme),
@@ -171,7 +178,7 @@ layouts = [
 bar_background = "#292d3e"
 widget_light_foreground = "#000000"
 widget_light_background = "#7BA0C0"
-widget_dark_foreground = "#FFFFFF"
+widget_dark_foreground = ""
 widget_dark_background = "#4B5569"
 
 widget_defaults = dict(
@@ -220,7 +227,7 @@ screens = [
                 widget.Spacer(length=10),
                 widget.TextBox(
                       text = "",
-                      fontsize=21,
+                      fontsize=24,
                        padding = 0,
                        foreground = widget_light_background,
                        # background = widget_dark_background
@@ -248,7 +255,6 @@ screens = [
                        ),
                 
                 widget.TextBox(
-                    font="FontAwesome",
                     text="",
                     fontsize = "22",
                     background = widget_dark_background
@@ -258,7 +264,6 @@ screens = [
                     func=lambda: subprocess.check_output("/home/weak/.config/qtile/scripts/hddusage.sh").decode("utf-8"),
                     background=widget_dark_background,
                     ),
-            
                 widget.TextBox(
                       text = "",
                       fontsize=21,
@@ -266,7 +271,7 @@ screens = [
                        foreground = widget_light_background,
                        background = widget_dark_background
                        ),
-                
+
                 widget.TextBox(
                       text = "  ",
                       font = "FontAwesome",
@@ -282,7 +287,7 @@ screens = [
                         colour_have_updates = widget_light_foreground,
                         colour_no_updates = widget_light_foreground,
                         mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn("alacritty -e sudo pacman -Syyu")},
-                        no_update_string = "Žádné aktualizace"
+                        no_update_string = "žádne aktualizace"
 
                     ),
                 widget.TextBox(
@@ -296,50 +301,12 @@ screens = [
                     appkey="7834197c2338888258f8cb94ae14ef49",
                     cityid=3078910,
                     language="cz",
-                    format="{main_temp}˚C  {weather_details}",
+                    icon_font="Weather Icons",
+                    format="{temp:.1f}˚C {weather_details}",
                     background=widget_dark_background,
+                    update_interval=600
                     ),
                
-                widget.TextBox(
-                      text = "",
-                      fontsize=21,
-                       padding = 0,
-                       foreground = widget_light_background,
-                       background = widget_dark_background
-                       ),
-                widget.Battery(
-                    charge_char = "",
-                    discharge_char = "",
-                    full_char = "",
-                    empty_char = "",
-                    format="{char} {percent: 2.0%}",
-                    background=widget_light_background,
-                    foreground=widget_light_foreground,
-                    update_interval=1
-                    ),
-               widget.TextBox(
-                      text = "",
-                      fontsize=21,
-                       padding = 0,
-                       foreground = widget_dark_background,
-                       background = widget_light_background
-                       ),
-                widget.TextBox(
-                      font="UbuntuMono Nerd Font",
-                      text = "",
-                  
-                       background = widget_dark_background,
-                       foreground = widget_dark_foreground
-                       ),
-
-                widget.Backlight(
-                        backlight_name = "intel_backlight",
-                        brightness_file= "brightness",
-                        max_brightness_file = "max_brightness",
-                        change_command = "xbacklight -set {0}",
-                        background = widget_dark_background,
-                        foreground = widget_dark_foreground
-                    ),
                 widget.TextBox(
                       text = "",
                       fontsize=21,
@@ -376,7 +343,7 @@ screens = [
                 widget.Clock(
                     format='%A, %d.%m %Y | %H:%M',
                     background = widget_dark_background,
-                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn("alacritty")}
+                    mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn("alacritty -e htop")}
                     ),
                 widget.Spacer(length=5,
                     background = widget_dark_background),
@@ -386,7 +353,7 @@ screens = [
                        padding = 0,
                        background = widget_dark_background,
                        # foreground = widget_dark_foreground,
-                       mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn("oblogout")}
+                       mouse_callbacks = {'Button1': lambda: qtile.cmd_spawn("/home/weak/.config/wos/menus/wos-powermenu.sh wos-powermenu-widget")}
                        ),
                 widget.Spacer(length=5,
                     background = widget_dark_background),
@@ -424,6 +391,11 @@ floating_layout = layout.Floating(float_rules=[
     Match(wm_class='maketag'),  # gitk
     Match(wm_class='ssh-askpass'),  # ssh-askpass
     Match(wm_class='xfce4-appfinder'),
+    Match(wm_class='MEGAsync'),
+    Match(wm_class='megasync'),
+    Match(wm_class='origin'),
+    Match(wm_class='Origin'),
+    Match(title='Origin'),
     Match(title='branchdialog'),  # gitk
     Match(title='pinentry'),  # GPG key password entry
 ], **layout_theme)
@@ -446,5 +418,3 @@ wmname = "LG3D"
 def start_once():
     home = os.path.expanduser('~')
     subprocess.call([home + '/.config/qtile/autostart.sh'])
-
-
