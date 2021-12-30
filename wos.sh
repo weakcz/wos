@@ -17,9 +17,9 @@ weakos
 wospath=$HOME/wos
 sudo pacman -S --noconfirm terminus-font
 setfont ter-v22b
-sudo chmod +777 /etc/vconsole
-echo "FONT=ter-v22b" >> /etc/vconsole
-sudo chmod 644 /etc/vconsole
+sudo chmod 777 /etc/vconsole.conf
+echo "FONT=ter-v22b" >> /etc/vconsole.conf
+sudo chmod 644 /etc/vconsole.conf
 
 
 # Přidáme uživatele do skupin
