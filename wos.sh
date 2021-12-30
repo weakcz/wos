@@ -17,9 +17,10 @@ weakos
 wospath=$HOME/wos
 sudo pacman -S --noconfirm terminus-font
 setfont ter-v22b
-sudo chown $USER:$USER /etc/vconsole
-sudo echo "FONT=ter-v22b" >> /etc/vconsole
-sudo chown root:root /etc/vconsole
+sudo chmod +777 /etc/vconsole
+echo "FONT=ter-v22b" >> /etc/vconsole
+sudo chmod 644 /etc/vconsole
+
 
 # Přidáme uživatele do skupin
 sudo usermod -a -G sys,log,network,floppy,scanner,power,rfkill,users,video,storage,optical,lp,audio,wheel,adm $USER
