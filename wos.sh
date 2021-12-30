@@ -8,11 +8,13 @@ echo -e "   ██║ █╗ ██║█████╗  ███████�
 echo -e "   ██║███╗██║██╔══╝  ██╔══██║██╔═██╗ ██║   ██║╚════██║ "
 echo -e "    ███╔███╔╝███████╗██║  ██║██║  ██╗╚██████╔╝███████║ "
 echo -e "    ╚══╝╚══╝ ╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝ "
-echo -e "\n                 Installation script                 \n"
+echo -e "\n                 Instalační  script                 \n"
 )
 
 weakos
-echo $SHELL
+[ -d "/sys/class/power_supply/BAT0" ] && echo "Directory exists."
+exit
+
 wospath=$HOME/wos
 sudo pacman -S --noconfirm terminus-font
 setfont ter-v22b
@@ -54,58 +56,79 @@ sudo chown root:root /etc/locale.conf
 # Instalace systémových aplikací
 SYSTEM_PKGS=(
     'alacritty'
+    'alsa-utils'
+    'alsa-plugins'
+    'base-devel'
     'blueman'
-    'bluez'
     'bluez-utils'
-    'nano'
-    'micro'
-    'xorg'
-    'qtile'
-    'nitrogen'
-    'picom'
-    'firefox'
-    'zsh'
-    'zsh-autosuggestions'
-    'zsh-syntax-highlighting'
-    'gamemode'
-    'htop'
-    'neofetch'
+    'bluez'
+    'calibre'
+    'cinnamon-translations'
+    'code'
+    'cups'
+    'dhclient'
     'dunst'
-    'rofi'
+    'file-roller'
+    'firefox'
+    'gamemode'
+    'gufw'
+    'htop'
+    'lolcat'
     'lsd'
-    'sddm'
-    'udisks2'
-    'udiskie'
+    'lutris'
+    'lxappearance'
+    'micro'
+    'nano'
+    'nemo'
+    'neofetch'
     'network-manager-applet'
     'networkmanager'
-    'dhclient'
-    'webkit2gtk'
-    'pulseaudio'
+    'mcomix'
+    'micro'
+    'otf-font-awesome'
+    'otf-raleway'
+    'nitrogen'
     'pavucontrol'
-    'nemo'
-    'file-roller'
-    'cinnamon-translations'
-    'lxappearance'
-    'code'
+    'picom'
+    'pulseaudio'
+    'pulseaudio-bluetooth'
+    'qalculate-gtk'
     'qt5ct'
-    'lolcat'
-    'xf86-video-qxl'
-    'xf86-video-intel'
-    'xf86-video-amdgpu'
-    'xf86-video-nouveau'
-    'xdg-user-dirs'
+    'qtile'
+    'rofi'
+    'sddm'
     'steam'
-    'lutris'
+    'system-config-printer'
+    'ttf-hack'
+    'ttf-joypixels'
+    'ttf-mononoki'
+    'ttf-ms-fonts'
+    'ttf-ubuntu-font-family'
+    'udiskie'
+    'udisks2'
+    'ufw'
+    'vlc'
+    'webkit2gtk'
     'wine-staging'
+    'xdg-user-dirs'
+    'xf86-video-amdgpu'
+    'xf86-video-intel'
+    'xf86-video-nouveau'
+    'xf86-video-qxl'
+    'xorg'
+    'zathura'
+    'zsh-autosuggestions'
+    'zsh-syntax-highlighting'
+    'zsh'
     )
 
 for SYSTEM_PKG in "${SYSTEM_PKGS[@]}"; do
-    echo "Instaluji: ${SYSTEM_PKG}"
+    echo -e "\nInstaluji: ${SYSTEM_PKG}\n"
     sudo pacman -S --noconfirm --needed "$SYSTEM_PKG"
     
 done
 
-echo -e "\nInstaluj yay pro instalaci programů z Arch User Repository (AUR)"
+echo -e "\nInstaluji yay pro instalaci programů z Arch User Repository (AUR)"
 cd ~
 git clone "https://aur.archlinux.org/yay.git"
 cd ${HOME}/yay
@@ -115,17 +138,15 @@ cd $wospath
 YAY=(
     # 'nerd-fonts-complete'
     'archlinux-themes-sddm'
-    'i3lock-color'
-    'qt5-styleplugins'
-    'pamac-aur'
-    'oh-my-zsh-git'
     'font-manager'
-    'ttf-ubuntu-font-family'
-    'nerd-fonts-ubuntu-mono'
+    'i3lock-color'
+    'oh-my-zsh-git'
+    'pamac-aur'
+    'qt5-styleplugins'
     )
 
 for YAY in "${YAY[@]}"; do
-    echo "Instaluji: ${YAY}"
+    echo -e "\nInstaluji: ${YAY}\n"
     yay -S --noconfirm $YAY
     
 done
@@ -134,7 +155,9 @@ done
 gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 
 # Zkopírujeme konfigurační soubory do systém
-echo "Kopíruj konfigurační soubory"
+echo "--------------------------------"
+echo "- Kopíruj konfigurační soubory -"
+echo "--------------------------------"
 mkdir -p $HOME/.config/wos
 mkdir -p $HOME/.config/rofi
 mkdir -p $HOME/.config/wos/rofi
@@ -151,18 +174,17 @@ cp -r -n $wospath/menus $HOME/.config/wos
 cp -n $wospath/rofi/config.rasi $HOME/.config/rofi/config.rasi
 cp -r -n $wospath/rofi $HOME/.config/wos
 sudo cp -r $wospath/bin/* /usr/bin
-echo -e "\n Konfigurační soubory rozbaleny"
 
 # Rozbalíme témata a ikony
-echo -e "\nUnpacking themes into /usr/share/themes. This may take a while. Please be patient\n"
+echo -e "\nRozbaluji témata do /usr/share/themes. Tohle může chvíli trvat, mějte strpení\n"
 sudo tar -xf $wospath/themes/adapta-nord.tar.gz -C /usr/share/themes/
-echo -e "\nUnpacking icons into /usr/share/icons. This may take a while. Please be patient\n"
+echo -e "\nRozbaluji iklony do /usr/share/icons. Tohle může chvíli trvat, mějte strpení\n"
 sudo tar -xf $wospath/icons/nordarcicons.tar.gz -C /usr/share/icons/
 
 # Zjistíme, zda-li je zsh jako defaultní shell, když ne, tak ho nastavíme jako defaultní
 if [ $SHELL != "/usr/bin/zsh" ] 
 then
-    echo -e "Changing shell from bash to zsh\n\n"
+    echo -e "Měním shell z bash na zsh\n\n"
     sudo chsh $USER -s $(which zsh)
     
     sudo ln -s /usr/share/zsh/plugins/zsh-syntax-highlighting /usr/share/oh-my-zsh/custom/plugins/
@@ -173,8 +195,10 @@ fi
 # Spustíme služby
 echo -e "\nZapínám Služby\n"
 sudo systemctl enable bluetooth.service
+sudo systemctl enable cups.service
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable sddm
+sudo systemctl enable ufw
 echo -e "\nSlužby Zapnuty\n"
 
 # Přidáme qt5ct proměnnou do /etc/environment aby byly GTK a QT5 témata jednotná
