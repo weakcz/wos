@@ -18,6 +18,7 @@ wospath=$HOME/wos
 sudo pacman -S --noconfirm terminus-font
 setfont ter-v22b
 sudo chmod 777 /etc/vconsole.conf
+echo "KEYMAP=cz" > /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
 sudo chmod 644 /etc/vconsole.conf
 
@@ -73,13 +74,19 @@ SYSTEM_PKGS=(
     'code'
     'cronie'
     'cups'
+    'deluge'
     'dhclient'
     'dunst'
     'file-roller'
     'firefox'
+    'firefox-i18n-cs'
     'gamemode'
+    'gimp'
     'gufw'
     'htop'
+    'inkscape'
+    'libreoffice-fresh'
+    'libreoffice-fresh-cs'
     'lolcat'
     'lsd'
     'lutris'
@@ -169,6 +176,7 @@ YAY=(
     'oh-my-zsh-git'
     'pamac-aur'
     'qt5-styleplugins'
+    'webapp-manager'
     )
 
 for YAY in "${YAY[@]}"; do
