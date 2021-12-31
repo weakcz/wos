@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-
+export LANG=cs_CZ.UTF-8
+setfont lat2-20
+clear
 function weakos (
 echo -e "\n                                                     "
 echo -e "   ██╗    ██╗███████╗ █████╗ ██╗  ██╗ ██████╗ ███████╗ "
@@ -12,17 +14,10 @@ echo -e "\n                 Instalační  script                 \n"
 )
 
 weakos
-export LANG=cs_CZ-UTF-8
 
 wospath=$HOME/wos
-sudo pacman -S --noconfirm terminus-font &
-setfont ter-v22b
-sudo chmod 777 /etc/vconsole.conf
-echo "FONT=ter-v22b" >> /etc/vconsole.conf
-sudo chmod 644 /etc/vconsole.conf
 
-# Proměnná na kontrolu přítomnosti baterie
-battery=$(upower -i $(upower -e | grep BAT))
+
 
 # Přidáme uživatele do skupin
 sudo usermod -a -G sys,log,network,floppy,scanner,power,rfkill,users,video,storage,optical,lp,audio,wheel,adm $USER
@@ -98,6 +93,7 @@ SYSTEM_PKGS=(
     'networkmanager'
     'mcomix'
     'micro'
+    'mpd'
     'otf-font-awesome'
     'otf-raleway'
     'nitrogen'
@@ -119,6 +115,7 @@ SYSTEM_PKGS=(
     'sddm'
     'steam'
     'system-config-printer'
+    'terminus-fonts'
     'ttf-hack'
     'ttf-joypixels'
     'ttf-mononoki'
@@ -126,6 +123,7 @@ SYSTEM_PKGS=(
     'ttf-ubuntu-font-family'
     'udiskie'
     'udisks2'
+    'upower'
     'ufw'
     'viewnior'
     'virt-manager'
@@ -154,6 +152,9 @@ for SYSTEM_PKG in "${SYSTEM_PKGS[@]}"; do
     echo -e "\nInstaluji: ${SYSTEM_PKG}\n"
     sudo pacman -S --noconfirm --needed "$SYSTEM_PKG"
 done
+
+# Proměnná na kontrolu přítomnosti baterie
+battery=$(upower -i $(upower -e | grep BAT))
 
 # Jestliže je baterie, nainstalujeme program na úsporu baterie
 [ -n "$battery" ] && sudo pacman -S --noconfirm --needed tlp
@@ -232,6 +233,7 @@ fi
 echo -e "\nZapínám Služby\n"
 sudo systemctl enable bluetooth.service
 sudo systemctl enable cups.service
+sudo systemctl enable mpd
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable sddm
 sudo systemctl enable ufw
@@ -248,6 +250,12 @@ sudo chown root:root /etc/environment
 sudo localectl set-x11-keymap cz
 sudo localectl set-keymap cz
 
+# Nastavíme font pro tty konzoli
+sudo chmod 777 /etc/vconsole.conf
+echo "FONT=ter-v22b" >> /etc/vconsole.conf
+sudo chmod 644 /etc/vconsole.conf
+
+
 # Nastavíme sddm (Login Manažera)
 # =================================================================
 # Smažeme wayland verzi pro qtile abychom se mohli přihlašovat pouze do X11
@@ -261,8 +269,8 @@ sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 
 # Vyčistíme adresáře, které po instalaci zbyly
 cd $HOME
-chmod +777 -R $HOME/wos
-chmod +777 -R $HOME/yay
+sudo chmod +777 -R $HOME/wos
+sudo chmod +777 -R $HOME/yay
 rm -r $HOME/yay
 rm -r $HOME/wos
 
