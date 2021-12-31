@@ -12,13 +12,12 @@ echo -e "\n                 Instalační  script                 \n"
 )
 
 weakos
-[ -d "/sys/class/power_supply/BAT0" ] && echo "Directory exists."
+export LANG=cs_CZ-UTF-8
 
 wospath=$HOME/wos
-sudo pacman -S --noconfirm terminus-font
+sudo pacman -S --noconfirm terminus-font &
 setfont ter-v22b
 sudo chmod 777 /etc/vconsole.conf
-echo "KEYMAP=cz" > /etc/vconsole.conf
 echo "FONT=ter-v22b" >> /etc/vconsole.conf
 sudo chmod 644 /etc/vconsole.conf
 
@@ -237,7 +236,7 @@ sudo systemctl enable --now NetworkManager
 sudo systemctl enable sddm
 sudo systemctl enable ufw
 # Jestliže je přítomna Baterie zapneme službu na úsporu baterie
-[ -d -n "$battery" ] && sudo systemctl enable tlp.service
+[ -n "$battery" ] && sudo systemctl enable tlp.service
 echo -e "\nSlužby Zapnuty\n"
 
 # Přidáme qt5ct proměnnou do /etc/environment aby byly GTK a QT5 témata jednotná
@@ -247,6 +246,7 @@ sudo chown root:root /etc/environment
 
 # Nastavíme klávesnici na českou
 sudo localectl set-x11-keymap cz
+sudo localectl set-keymap cz
 
 # Nastavíme sddm (Login Manažera)
 # =================================================================
