@@ -76,6 +76,7 @@ SYSTEM_PKGS=(
     'firefox-i18n-cs'
     'gamemode'
     'gimp'
+    'grub-customizer'
     'gufw'
     'htop'
     'inkscape'
@@ -235,9 +236,11 @@ fi
 echo -e "\nZapínám Služby\n"
 sudo systemctl enable bluetooth.service
 sudo systemctl enable cups.service
+sudo systemctl enable libvirtd.service
 sudo systemctl enable mpd
 sudo systemctl enable --now NetworkManager
 sudo systemctl enable sddm
+sudo systemctl enable virtlogd.socket
 sudo systemctl enable ufw
 # Jestliže je přítomna Baterie zapneme službu na úsporu baterie
 [ -n "$battery" ] && sudo systemctl enable tlp.service
@@ -262,12 +265,12 @@ sudo chmod 644 /etc/vconsole.conf
 # =================================================================
 # Smažeme wayland verzi pro qtile abychom se mohli přihlašovat pouze do X11
 sudo rm /usr/share/wayland-sessions/qtile-wayland.desktop
-
 # Zkopírujeme konfigurační soubor
 sudo cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
-
 # Nastavíme téma pro sddm
 sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
+# Pokud se jedná o laptop, tak změníme rozlišení obrazovky
+[ -n "$battery" ] && sudo echo "xrandr -s 1600x900" >> /usr/share/sddm/scripts/Xsetup
 
 # Vyčistíme adresáře, které po instalaci zbyly
 cd $HOME
