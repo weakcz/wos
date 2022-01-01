@@ -212,7 +212,7 @@ cp -r -n $wospath/rofi $HOME/.config/wos
 sudo cp -r $wospath/bin/* /usr/bin
 
 # Zjistíme zda se jedná o laptop či desktop a vytvoříme potřebnou konfiguraci
-[ -d -n "$battery" ] && cp /home/$USER/.config/qtile/config-laptop.py /home/$USER/.config/qtile/config.py || cp /home/$USER/.config/qtile/config-desktop.py /home/$USER/.config/qtile/config.py
+[ -n "$battery" ] && cp /home/$USER/.config/qtile/config-laptop.py /home/$USER/.config/qtile/config.py || cp /home/$USER/.config/qtile/config-desktop.py /home/$USER/.config/qtile/config.py
 
 # Rozbalíme témata a ikony
 echo -e "\nRozbaluji témata do /usr/share/themes. Tohle může chvíli trvat, mějte strpení\n"
