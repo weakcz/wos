@@ -172,6 +172,8 @@ YAY=(
     'deadbeef'
     'font-manager'
     'i3lock-color'
+    'joplin'
+    'joplin-desktop'
     'nerd-fonts-ubuntu-mono'
     'oh-my-zsh-git'
     'pamac-aur'
