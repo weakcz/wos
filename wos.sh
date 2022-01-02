@@ -2,6 +2,7 @@
 export LANG=cs_CZ.UTF-8
 setfont lat2-20
 clear
+
 function weakos (
 echo -e "\n                                                     "
 echo -e "   ██╗    ██╗███████╗ █████╗ ██╗  ██╗ ██████╗ ███████╗ "
@@ -16,7 +17,7 @@ echo -e "\n                 Instalační  script                 \n"
 weakos
 
 wospath=$HOME/wos
-
+mkdir -p $HOME/.config/wos
 
 
 # Přidáme uživatele do skupin
@@ -152,8 +153,9 @@ SYSTEM_PKGS=(
     )
 
 for SYSTEM_PKG in "${SYSTEM_PKGS[@]}"; do
-    echo -e "\nInstaluji: ${SYSTEM_PKG}\n"
-    sudo pacman -S --noconfirm --needed "$SYSTEM_PKG"
+    echo "["$(date)"]" >> $HOME/.config/wos/wos.log
+    echo -e "\nInstaluji: ${SYSTEM_PKG}\n" | tee -a $HOME/.config/wos/wos.log
+    sudo pacman -S --noconfirm --needed "$SYSTEM_PKG" | tee -a $HOME/.config/wos/wos.log
 done
 
 # Proměnná na kontrolu přítomnosti baterie
@@ -188,8 +190,9 @@ YAY=(
     )
 
 for YAY in "${YAY[@]}"; do
-    echo -e "\nInstaluji: ${YAY}\n"
-    yay -S --noconfirm $YAY
+    echo "["$(date)"]" >> $HOME/.config/wos/wos.log
+    echo -e "\nInstaluji: ${YAY}\n" | tee -a $HOME/.config/wos/wos.log
+    yay -S --noconfirm $YAY | tee -a $HOME/.config/wos/wos.log
     
 done
 
@@ -200,7 +203,6 @@ gsettings set org.gtk.Settings.FileChooser sort-directories-first true
 echo "--------------------------------"
 echo "- Kopíruj konfigurační soubory -"
 echo "--------------------------------"
-mkdir -p $HOME/.config/wos
 mkdir -p $HOME/.config/rofi
 mkdir -p $HOME/.config/wos/rofi
 sudo mkdir -p /usr/share/wos
@@ -280,11 +282,11 @@ sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 [ -n "$battery" ] && sudo echo "xrandr -s 1600x900" >> /usr/share/sddm/scripts/Xsetup
 
 # Vyčistíme adresáře, které po instalaci zbyly
-cd $HOME
-sudo chmod +777 -R $HOME/wos
-sudo chmod +777 -R $HOME/yay
-rm -r $HOME/yay
-rm -r $HOME/wos
+#cd $HOME
+#sudo chmod +777 -R $HOME/wos
+#sudo chmod +777 -R $HOME/yay
+#rm -r $HOME/yay
+#rm -r $HOME/wos
 
 # A máme hotovo
 echo -e "Instalace weakOSu je hotová. Nyní stačí restartovat počítač a weakOS bude aktivní.\n"
