@@ -97,10 +97,16 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# Práce s adresáři
 alias ls="lsd -l --group-dirs first"
 alias la="lsd -la --group-dirs first"
 alias wos="wos/wos.sh"
-# Random color script
+
+# Update grub
+alias update-grub="grub-mkconfig -o /boot/grub/grub.cfg"
+
+# Něco jenom tak pro srandu
 $HOME/.config/wos/scripts/ferengi-cz.sh | lolcat
 
 

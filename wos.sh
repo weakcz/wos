@@ -76,6 +76,7 @@ SYSTEM_PKGS=(
     'firefox-i18n-cs'
     'gamemode'
     'gimp'
+    'gnome-disk-utility'
     'grub-customizer'
     'gufw'
     'htop'
@@ -113,6 +114,7 @@ SYSTEM_PKGS=(
     'qt5ct'
     'qtile'
     'rofi'
+    'scrot'
     'sddm'
     'steam'
     'system-config-printer'
@@ -178,8 +180,11 @@ YAY=(
     'nerd-fonts-ubuntu-mono'
     'oh-my-zsh-git'
     'pamac-aur'
+    'protonup'
+    'protonup-qt'
     'qt5-styleplugins'
     'webapp-manager'
+    'xidlehook'
     )
 
 for YAY in "${YAY[@]}"; do
@@ -206,6 +211,8 @@ cp -r -n $wospath/dotfiles/.config/* $HOME/.config/
 cp -r -n $wospath/scripts $HOME/.config/wos/
 cp $wospath/dotfiles/.gtkrc-2.0 $HOME
 cp $wospath/dotfiles/.bashrc $HOME
+cp $wospath/dotfiles/.xinitrc $HOME
+cp $wospath/dotfiles/.Xresources $HOME
 cp $wospath/dotfiles/.zshrc $HOME
 cp -r -n $wospath/menus $HOME/.config/wos
 cp -n $wospath/rofi/config.rasi $HOME/.config/rofi/config.rasi
