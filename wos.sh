@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
+sudo pacman --noconfirm -S terminus-font &>/dev/null
+
 export LANG=cs_CZ.UTF-8
-setfont lat2-20
+setfont ter-v22b
 clear
 
 function weakos (
@@ -119,11 +121,9 @@ SYSTEM_PKGS=(
     'sddm'
     'steam'
     'system-config-printer'
-    'terminus-font'
     'ttf-hack'
     'ttf-joypixels'
     'ttf-mononoki'
-    'ttf-ms-fonts'
     'ttf-ubuntu-font-family'
     'udiskie'
     'udisks2'
@@ -159,7 +159,7 @@ for SYSTEM_PKG in "${SYSTEM_PKGS[@]}"; do
 done
 
 # Proměnná na kontrolu přítomnosti baterie
-battery=$(upower -i $(upower -e | grep BAT))
+battery=$(upower -i $(upower -e | grep BAT))  
 
 # Jestliže je baterie, nainstalujeme program na úsporu baterie
 [ -n "$battery" ] && sudo pacman -S --noconfirm --needed tlp
@@ -185,6 +185,7 @@ YAY=(
     'protonup'
     'protonup-qt'
     'qt5-styleplugins'
+    'ttf-ms-fonts'
     'webapp-manager'
     'xidlehook'
     )
@@ -279,18 +280,19 @@ sudo cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
 # Nastavíme téma pro sddm
 sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 # Pokud se jedná o laptop, tak změníme rozlišení obrazovky
-if [ -n "$battery" ] then 
+if [ -n "$battery" ] 
+then 
     sudo chmod +777 /usr/share/sddm/scripts/Xsetup
     sudo echo "xrandr -s 1600x900" >> /usr/share/sddm/scripts/Xsetup
     sudo chmod 644 /usr/share/sddm/scripts/Xsetup
 fi
 
 # Vyčistíme adresáře, které po instalaci zbyly
-#cd $HOME
-#sudo chmod +777 -R $HOME/wos
-#sudo chmod +777 -R $HOME/yay
-#rm -r $HOME/yay
-#rm -r $HOME/wos
+cd $HOME
+sudo chmod +777 -R $HOME/wos
+sudo chmod +777 -R $HOME/yay
+rm -r $HOME/yay
+rm -r $HOME/wos
 
 # A máme hotovo
 echo -e "Instalace weakOSu je hotová. Nyní stačí restartovat počítač a weakOS bude aktivní.\n"
