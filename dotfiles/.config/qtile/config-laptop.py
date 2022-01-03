@@ -95,8 +95,7 @@ keys = [
 
     Key([mod, "control"], "r", lazy.restart(), desc="Restart Qtile"),
     Key([mod, "control"], "q", lazy.shutdown(), desc="Shutdown Qtile"),
-    Key([mod], "r", lazy.spawn("rofi -show drun -show-icons"),
-        desc="Spawn a command using a prompt widget"),
+    Key([mod], "r", lazy.spawn("rofi -show drun -show-icons"), desc="Spawn a command using a prompt widget"),
 
     ######################################################################################################
     # Shortcuts for Applications                                                                         #
@@ -110,9 +109,10 @@ keys = [
     Key([mod, "shift"], "Return", lazy.spawn("nemo"), desc="Nemo"),
     # Sound Control - Pavucontrol
     Key(["mod1"], "p", lazy.spawn("pavucontrol"), desc="Pavucontrol"),
-    # Oblogout
-    Key(["mod1", "control"], "Delete", lazy.spawn("oblogout"), desc="Oblogout"),
-    
+    # Fullscreen Powermenu
+    Key(["mod1", "control"], "Delete", lazy.spawn("/home/weak/.config/wos/menus/wos-powermenu.sh wos-powermenu-fullscreen"), desc="PowerMenu"),
+    # Screen Locker
+    Key([mod], "c", lazy.spawn("wos-lock"), desc="Zámek Obrazovky"),
     
 
 ]

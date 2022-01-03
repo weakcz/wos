@@ -119,7 +119,7 @@ SYSTEM_PKGS=(
     'sddm'
     'steam'
     'system-config-printer'
-    'terminus-fonts'
+    'terminus-font'
     'ttf-hack'
     'ttf-joypixels'
     'ttf-mononoki'
@@ -279,7 +279,11 @@ sudo cp /usr/lib/sddm/sddm.conf.d/default.conf /etc/sddm.conf.d/
 # Nastavíme téma pro sddm
 sudo sed -i 's/^Current=*.*/Current=maldives/g' /etc/sddm.conf.d/default.conf
 # Pokud se jedná o laptop, tak změníme rozlišení obrazovky
-[ -n "$battery" ] && sudo echo "xrandr -s 1600x900" >> /usr/share/sddm/scripts/Xsetup
+if [ -n "$battery" ] then 
+    sudo chmod +777 /usr/share/sddm/scripts/Xsetup
+    sudo echo "xrandr -s 1600x900" >> /usr/share/sddm/scripts/Xsetup
+    sudo chmod 644 /usr/share/sddm/scripts/Xsetup
+fi
 
 # Vyčistíme adresáře, které po instalaci zbyly
 #cd $HOME
