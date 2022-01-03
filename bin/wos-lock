@@ -4,6 +4,11 @@ outline="#000000"
 font="Impact"
 time_size="100"
 date_size="44"
+res_x=$(xdpyinfo | grep dimensions | cut -d " " -f 7 | cut -d "x" -f1)
+res_y=$(xdpyinfo | grep dimensions | cut -d " " -f 7 | cut -d "x" -f2)
+date_pos_x=$(($res_x / 2))
+date_pos_y=$(($res_y / 2 + 60))
+time_pos_y=$(($res_y / 2))
 
 
 i3lock \
@@ -24,7 +29,8 @@ i3lock \
     --date-str="%A, %d.%m. %Y" \
     --date-size=$date_size \
     --date-color=$foreground \
-    --date-pos="960:600" \
+    --date-pos="$date_pos_x:$date_pos_y" \
+    --time-pos="$date_pos_x:$time_pos_y" \
     --time-size=$time_size \
     --time-color=$foreground \
     --greeter-color=$foreground \

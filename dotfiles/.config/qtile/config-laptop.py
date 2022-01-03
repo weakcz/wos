@@ -287,7 +287,7 @@ screens = [
                     appkey="7834197c2338888258f8cb94ae14ef49",
                     cityid=3078910,
                     language="cz",
-                    format="{main_temp}˚C  {weather_details}",
+                    format="{temp:.1f}˚C {weather_details}",
                     background=widget_dark_background,
                     ),
                
