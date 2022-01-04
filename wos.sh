@@ -502,6 +502,7 @@ YAY=(
     'pamac-aur'
     'protonup'
     'protonup-qt'
+    'pulseaudio-ctl'
     'qt5-styleplugins'
     'ttf-ms-fonts'
     'webapp-manager'

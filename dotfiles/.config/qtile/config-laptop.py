@@ -98,8 +98,8 @@ keys = [
     Key([mod], "r", lazy.spawn("rofi -show drun -show-icons"), desc="Spawn a command using a prompt widget"),
 
     # Change the volume if your keyboard has special volume keys
-    Key([], "XF86AudioRaiseVolume",lazy.spawn("amixer set Master 2.5+ unmute")),
-    Key([], "XF86AudioLowerVolume",lazy.spawn("amixer set Master 2.5- unmute")),
+    Key([], "XF86AudioRaiseVolume",lazy.spawn("pulseaudio-ctl up 5")),
+    Key([], "XF86AudioLowerVolume",lazy.spawn("pulseaudio-ctl down 5")),
     Key([], "XF86AudioMute",lazy.spawn("amixer set Master togglemute")),
     # Change brightness if your keyboard has keys for brightness control
     Key([], "XF86MonBrightnessDown", lazy.spawn("xbacklight -5")),
